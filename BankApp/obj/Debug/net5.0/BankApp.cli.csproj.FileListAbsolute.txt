@@ -1,0 +1,15 @@
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.cli.exe
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.cli.deps.json
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.cli.runtimeconfig.json
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.cli.runtimeconfig.dev.json
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.cli.dll
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\ref\BankApp.cli.dll
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.cli.pdb
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.AssemblyInfoInputs.cache
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.AssemblyInfo.cs
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.csproj.CoreCompileInputs.cache
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.dll
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\ref\BankApp.cli.dll
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.pdb
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.genruntimeconfig.cache
