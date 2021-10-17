@@ -13,3 +13,9 @@ C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankAp
 C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\ref\BankApp.cli.dll
 C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.pdb
 C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.genruntimeconfig.cache
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.Models.dll
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.Services.dll
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.Services.pdb
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\bin\Debug\net5.0\BankApp.Models.pdb
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.csproj.AssemblyReference.cache
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp\obj\Debug\net5.0\BankApp.cli.csproj.CopyComplete

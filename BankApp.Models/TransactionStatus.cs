@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BankApp.Models
 {
-    class TransactionStatus
+    public enum TransactionStatus
     {
+        Credited,
+        Debited
     }
 }
