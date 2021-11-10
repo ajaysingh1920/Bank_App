@@ -9,3 +9,4 @@ C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp.Models\obj\Debug\net5.0
 C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp.Models\obj\Debug\net5.0\BankApp.Models.dll
 C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp.Models\obj\Debug\net5.0\ref\BankApp.Models.dll
 C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp.Models\obj\Debug\net5.0\BankApp.Models.pdb
+C:\Users\Ajay singh sisodia\source\repos\BankApp\BankApp.Models\obj\Debug\net5.0\BankApp.Models.csproj.AssemblyReference.cache

@@ -3,132 +3,312 @@ using System;
 
 namespace BankApp.cli
 {
-    class Program
+    class  Program
     {
         static void Main(string[] args)
         {
-            StandardMessages.Welcome();
-            CreateService createService = new CreateService();
-            InputValidator inputValidator = new InputValidator();
-            OperationsService operationService = new OperationsService();
+            DataStorage dataStorage = new();
+
+            ConsoleOutput.WelcomeDisplay();
 
             while (true)
             {
-                StandardMessages.ChoiceDisplay();
-                Choice choice = (Choice)Convert.ToInt32(Console.ReadLine());
+                //Ask Whether you are a Customer or Staff
+                ConsoleOutput.MainMenuDisplay();
+                MainMenu MainMenu = (MainMenu)(Convert.ToInt32(Console.ReadLine())-1);
 
-                string bankname = "";
-                string username = "";
-                if (choice != Choice.Create && choice != Choice.Quit)
+                //if the user is Customer
+                if (MainMenu == MainMenu.Customer)
                 {
-                    StandardMessages.EnterBankName();
-                    bankname = Console.ReadLine();
-                    while (true)
+                    string Bankname;
+                    Status status;
+                    do
                     {
-                        bool result = inputValidator.CheckBank(bankname, createService);
-                        if (result == true)
+                        ConsoleOutput.EnterBankName();
+                        Bankname = Console.ReadLine();
+                        status = InputValidator.ValidateBankName(dataStorage, Bankname);
+                        if (status == Status.BankNameInvalid)
                         {
-                            break;
+                            Console.WriteLine("Pleae enter the Correct BankName");
                         }
-                        Console.WriteLine("Please, enter the correct bankname");
-                    }
-                    username = "@";
-                    bool res = false;
-                    while (true)
+                    } while (status == Status.BankNameInvalid);
+
+                    string Username;
+                    do
                     {
-                        StandardMessages.EnterName();
-                        username = Console.ReadLine();
-                        res = inputValidator.UsernameCheck(bankname, username, createService);
-                        if (res == true)
+                        ConsoleOutput.EnterUsername();
+                        Username = Console.ReadLine();
+                        status = InputValidator.ValidateAccountUsername(dataStorage, Bankname, Username);
+
+                        if (status == Status.UsernameInvalid)
                         {
-                            break;
+                            Console.WriteLine("Please Enter the Correct Username");
                         }
-                        Console.WriteLine("username is not matched");
-                    }
+                    } while (status == Status.UsernameInvalid);
 
-
-                    while (true)
+                    string Password;
+                    do
                     {
-                        StandardMessages.EnterPassword();
-                        string password = Console.ReadLine();
-                        res = inputValidator.PasswordCheck(bankname, username, password, createService);
-                        if (res == true)
+                        ConsoleOutput.EnterPassword();
+                        Password = Console.ReadLine();
+                        status = InputValidator.ValidateAccountPassword(dataStorage, Bankname, Username, Password);
+                        if (status == Status.PasswordInvalid)
                         {
-                            break;
+                            Console.WriteLine("Please Enter the Correct Password");
                         }
-                        Console.WriteLine("Please enter the correct password");
-                    }
-                }
+                    } while (status == Status.PasswordInvalid);
 
-                if (choice == Choice.Create)
-                {
-                    StandardMessages.EnterBankName();
-                    string name = Console.ReadLine();
-                    string bankName = createService.CreateBank(name);
-                    bool res = false;
-                    string userName = "@";
-                    while (true)
+                    //Ask the Customer which operation he wants to perform
+                    ConsoleOutput.CustomerOperationMenu();
+                    CustomerOperationMenu CustomerOperationMenu = (CustomerOperationMenu)(Convert.ToInt32(Console.ReadLine()) - 1);
+
+                    switch (CustomerOperationMenu)
                     {
-                        StandardMessages.EnterName();
-                        userName = Console.ReadLine();
-                        //if username is unique then that method return false otherwise true
-                        res = inputValidator.UsernameCheck(bankName, userName, createService);
-                        if (res == false)
-                        {
+                        // if the customer wants to Deposit
+                        case CustomerOperationMenu.Deposit:
+                            Console.WriteLine("Please enter the amount you want to deposit");
+                            decimal Amount = Convert.ToInt32(Console.ReadLine());
+                            CustomerService.Deposit(dataStorage,Bankname,Username,Amount);
                             break;
-                        }
+
+                        //if the customer wants to withdraw
+                        case CustomerOperationMenu.Withdraw:
+                            Console.Write("Please enter the amount you want to withdraw");
+                            do
+                            {
+                                Amount = Convert.ToDecimal(Console.ReadLine());
+                                status = CustomerService.Withdraw(dataStorage, Bankname, Username, Amount);
+
+                                if (status == Status.InsufficientAmount)
+                                {
+                                    Console.WriteLine("You don't have enough balance,Please Enter the correct amount");
+                                }
+                            } while (status == Status.InsufficientAmount);
+
+                            break;
+
+                        //if the customer wants to transfer
+                        case CustomerOperationMenu.Transfer:
+                            Console.WriteLine("Please enter the sender bankname");
+                            string ReceiverBankname;
+                            do
+                            {
+                                ReceiverBankname = Console.ReadLine();
+                                status = InputValidator.ValidateBankName(dataStorage, ReceiverBankname);
+                                if (status == Status.BankNameInvalid)
+                                {
+                                    Console.WriteLine("Please enter the correct bankname");
+                                }
+                            } while (status == Status.BankNameInvalid);
+
+                            string ReceiverUsername;
+                            do
+                            {
+                                ReceiverUsername = Console.ReadLine();
+                                status = InputValidator.ValidateAccountUsername(dataStorage, ReceiverBankname, ReceiverUsername);
+                                if (status == Status.UsernameInvalid)
+                                {
+                                    Console.WriteLine("Please enter the correct Username");
+                                }
+                            } while (status == Status.UsernameInvalid);
+
+                            Console.WriteLine("Please Enter the Amount you want to transfer");
+                            do
+                            {
+                                Amount = Convert.ToDecimal(Console.ReadLine());
+                                ConsoleOutput.EnterTransferMode();
+                                TransferMode Mode = (TransferMode)(Convert.ToInt32(Console.ReadLine()) - 1);
+                                if (Mode == TransferMode.RTGS)
+                                {
+                                    status = CustomerService.Transfer(dataStorage, Bankname, Username, ReceiverBankname, ReceiverUsername, Amount, "RTGS");
+                                }
+                                else if (Mode == TransferMode.IMPS)
+                                {
+                                    status = CustomerService.Transfer(dataStorage, Bankname, Username, ReceiverBankname, ReceiverUsername, Amount, "IMPS");
+                                }
+
+                                if (status == Status.InsufficientAmount)
+                                {
+                                    Console.WriteLine("You don't have enough balance,Please Enter the correct amount");
+                                }
+                            } while (status == Status.InsufficientAmount);
+
+                            break;
+
+                        // if the customer wants to see the transaction History
+                        case CustomerOperationMenu.TransactionHistory:
+                            CustomerService.TransactionHistory(dataStorage,Bankname,Username);
+                            break;
                     }
 
-                    StandardMessages.EnterPassword();
-                    string password = Console.ReadLine();
-                    createService.CreateAccount(bankName, userName, password);
-                    Console.WriteLine("Account with the username " + userName + " is successfully created");
                 }
-                else if (choice == Choice.Deposit)
+
+                //if ther user is Staff
+                else if (MainMenu == MainMenu.Staff)
                 {
-                    StandardMessages.EnterAmount();
-                    int amount = Convert.ToInt32(Console.ReadLine());
-                    operationService.Deposit(bankname, username, amount, createService);
-                }
-                else if (choice == Choice.Withdraw)
-                {
-                    StandardMessages.EnterAmount();
-                    int amount = Convert.ToInt32(Console.ReadLine());
-                    operationService.WithDraw(bankname, username, amount, createService);
-                }
-                else if (choice == Choice.Transfer)
-                {
-                    Console.WriteLine("Enter the account you want to transfer");
-                    string transferUsername = "";
-                    bool res = false;
-                    while (true)
+
+                    //Checking the Credential of Staff Person
+                    string Bankname;
+                    Status status;
+                    do
                     {
-                        transferUsername = Console.ReadLine();
-                        res = inputValidator.UsernameCheck(bankname, transferUsername, createService);
-                        if (res == true)
-                        {
-                            break;
+                        ConsoleOutput.EnterBankName();
+                        Bankname = Console.ReadLine();
+                        status = InputValidator.ValidateBankName(dataStorage,Bankname);
+                        if (status== Status.BankNameInvalid){
+                            Console.WriteLine("Pleae enter the Correct BankName");
                         }
-                        Console.WriteLine("username is not matched");
+                    } while (status==Status.BankNameInvalid);
+
+                    string Username;
+                    do
+                    {
+                        ConsoleOutput.EnterUsername();
+                        Username = Console.ReadLine();
+                        status = InputValidator.ValidateStaffUsername(dataStorage, Bankname, Username);
+
+                        if (status == Status.UsernameInvalid)
+                        {
+                            Console.WriteLine("Please Enter the Correct Username");
+                        }
+                    } while (status == Status.UsernameInvalid);
+
+                    string Password;
+                    do
+                    {
+                        ConsoleOutput.EnterPassword();
+                        Password = Console.ReadLine();
+                        status = InputValidator.ValidateStaffPassword(dataStorage, Bankname, Username, Password);
+                        if (status == Status.PasswordInvalid)
+                        {
+                            Console.WriteLine("Please Enter the Correct Password");
+                        }
+                    } while (status == Status.PasswordInvalid);
+
+                    //Ask the Staff which Operation he want to do
+                    ConsoleOutput.StaffOperationMenu();
+                    StaffOperationMenu StaffOperationMenu = (StaffOperationMenu)(Convert.ToInt32(Console.ReadLine()) - 1);
+
+                    switch (StaffOperationMenu)
+                    {
+                        //for create an account
+                        case StaffOperationMenu.Create:
+                            do
+                            {
+                                Console.WriteLine("Please enter the username from which you want to create an account:");
+                                Username = Console.ReadLine();
+                                status = InputValidator.ValidateAccountUsername(dataStorage, Bankname, Username);
+
+                                if (status == Status.UsernameValid)
+                                {
+                                    Console.WriteLine("Please enter the unique username");
+                                }
+                            } while (status == Status.UsernameValid);
+
+                            ConsoleOutput.EnterPassword();
+                            Password = Console.ReadLine();
+                            StaffService.CreateAccount(dataStorage,Bankname, Username, Password);
+                            break;
+
+
+                        //for delete an account
+                        case StaffOperationMenu.Delete:
+                            do
+                            {
+                                Console.WriteLine("Please enter the username of the account you want to delete ");
+                                Username = Console.ReadLine();
+                                status = InputValidator.ValidateAccountUsername(dataStorage, Bankname, Username);
+
+                                if (status == Status.UsernameInvalid)
+                                {
+                                    Console.WriteLine("Please enter the correct username");
+                                }
+                            } while (status == Status.UsernameInvalid);
+
+                            do
+                            {
+                                ConsoleOutput.EnterPassword();
+                                Password = Console.ReadLine();
+                                status = InputValidator.ValidateAccountPassword(dataStorage, Bankname, Username, Password);
+                                if (status == Status.PasswordInvalid)
+                                {
+                                    Console.WriteLine("Please Enter the Correct Password");
+                                }
+                            } while (status == Status.PasswordInvalid);
+
+                            StaffService.Delete(dataStorage, Bankname, Username);
+                            break;
+
+                        // for transaction history
+                        case StaffOperationMenu.TransactionHistory:
+                            do
+                            {
+                                ConsoleOutput.EnterUsername();
+                                Username = Console.ReadLine();
+                                status = InputValidator.ValidateAccountUsername(dataStorage, Bankname, Username);
+
+                                if (status == Status.UsernameInvalid)
+                                {
+                                    Console.WriteLine("Please enter the correct username");
+                                }
+                            } while (status == Status.UsernameInvalid);
+
+                            do
+                            {
+                                ConsoleOutput.EnterPassword();
+                                Password = Console.ReadLine();
+                                status = InputValidator.ValidateAccountPassword(dataStorage, Bankname, Username, Password);
+                                if (status == Status.PasswordInvalid)
+                                {
+                                    Console.WriteLine("Please Enter the Correct Password");
+                                }
+                            } while (status == Status.PasswordInvalid);
+
+                            StaffService.ShowTransactionHistory(dataStorage, Bankname, Username);
+                            break;
+
+                        //for revert an transaction
+                        case StaffOperationMenu.RevertTransaction:
+                            do
+                            {
+                                ConsoleOutput.EnterUsername();
+                                Username = Console.ReadLine();
+                                status = InputValidator.ValidateAccountUsername(dataStorage, Bankname, Username);
+
+                                if (status == Status.UsernameInvalid)
+                                {
+                                    Console.WriteLine("Please enter the correct username");
+                                }
+                            } while (status == Status.UsernameInvalid);
+
+                            do
+                            {
+                                ConsoleOutput.EnterPassword();
+                                Password = Console.ReadLine();
+                                status = InputValidator.ValidateAccountPassword(dataStorage, Bankname, Username, Password);
+                                if (status == Status.PasswordInvalid)
+                                {
+                                    Console.WriteLine("Please Enter the Correct Password");
+                                }
+                            } while (status == Status.PasswordInvalid);
+
+                            StaffService.RevertTransaction(dataStorage, Bankname, Username);
+                            break;
+                        
+                        //for exchange currency
+                        case StaffOperationMenu.ExchangeCurrency:
+                            break;
+
+                        default:
+                            break;
                     }
-
-                    int amount = Convert.ToInt32(Console.ReadLine());
-                    operationService.Transfer(bankname, username, transferUsername, createService, amount);
-
                 }
-                else if (choice == Choice.TransactionHistory)
-                {
-                    operationService.TransactionHistory(bankname, username, createService);
-                }
-                else if (choice == Choice.Quit)
+                else if(MainMenu==MainMenu.Quit)
                 {
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("Please enter the correct choice");
-                }
             }
+
 
         }
     }

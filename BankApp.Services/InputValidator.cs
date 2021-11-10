@@ -9,64 +9,100 @@ namespace BankApp.Services
 {
     public class InputValidator
     {
-        public bool UsernameCheck(string bankname, string username, CreateService cs)
+        
+        public static Status ValidateBankName(DataStorage DataStorage,string BankName)
         {
-            for (int i = 0; i < cs.bank.Count; i++)
+            List<Bank> Bank = DataStorage.Bank;
+      
+            for(int i = 0; i < Bank.Count; i++)
             {
-                if (cs.bank[i].name == bankname)
-                {
-                    List<Account> list = cs.bank[i].accounts;
-
-                    for (int j = 0; j < list.Count; j++)
-                    {
-                        if (list[j].username == username)
-                        {
-                            return true;
-                        }
-                    }
-
-                }
+                if (Bank[i].Name == BankName) return Status.BankNameValid;
             }
-
-            return false;
+            return Status.BankNameInvalid;
         }
 
-        public bool PasswordCheck(string bankname, string username, string password, CreateService cs)
+        public static Status ValidateStaffUsername(DataStorage DataStorage,string BankName,string Username)
         {
-            for (int i = 0; i < cs.bank.Count; i++)
-            {
-                if (cs.bank[i].name == bankname)
-                {
-                    List<Account> list = cs.bank[i].accounts;
+            List<Bank> Bank = DataStorage.Bank;
 
-                    for (int j = 0; j < list.Count; j++)
+            for(int i = 0; i < Bank.Count; i++)
+            {
+                if (Bank[i].Name == BankName)
+                {
+                    List<Staff> Staff = Bank[i].Staff;
+
+                    for(int j = 0; j < Staff.Count; j++)
                     {
-                        if (list[j].username == username)
+                        if (Staff[j].Username == Username) return Status.UsernameValid;
+                    }
+                }
+            }
+
+            return Status.UsernameInvalid;
+        }
+        
+        public static Status ValidateStaffPassword(DataStorage DataStorage,string BankName,string Username,string Password)
+        {
+            List<Bank> Bank = DataStorage.Bank;
+
+            for (int i = 0; i < Bank.Count; i++)
+            {
+                if (Bank[i].Name == BankName)
+                {
+                    List<Staff> Staff = Bank[i].Staff;
+
+                    for (int j = 0; j < Staff.Count; j++)
+                    {
+                        if (Staff[j].Username == Username)
                         {
-                            if (list[j].password == password)
-                            {
-                                return true;
-                            }
+                            if (Staff[j].Password == Password) return Status.PasswordValid;
                         }
                     }
-
                 }
             }
-
-            return false;
+            return Status.PasswordInvalid;
         }
 
-        public bool CheckBank(String bankname, CreateService cs)
+        public static Status ValidateAccountUsername(DataStorage DataStorage,string BankName,string Username)
         {
-            for (int i = 0; i < cs.bank.Count; i++)
+            List<Bank> Bank = DataStorage.Bank;
+
+            for (int i = 0; i < Bank.Count; i++)
             {
-                if (cs.bank[i].name == bankname)
+                if (Bank[i].Name == BankName)
                 {
-                    return true;
+                    List<Account> Accounts = Bank[i].Accounts;
+
+                    for (int j = 0; j < Accounts.Count; j++)
+                    {
+                        if (Accounts[j].Username == Username) return Status.UsernameValid;
+                    }
                 }
             }
 
-            return false;
+            return Status.UsernameInvalid;
+        }
+
+        public static Status ValidateAccountPassword(DataStorage DataStorage,string BankName,string Username,string Password)
+        {
+            List<Bank> Bank = DataStorage.Bank;
+
+            for (int i = 0; i < Bank.Count; i++)
+            {
+                if (Bank[i].Name == BankName)
+                {
+                    List<Account> Accounts = Bank[i].Accounts;
+
+                    for (int j = 0; j < Accounts.Count; j++)
+                    {
+                        if (Accounts[j].Username == Username)
+                        {
+                            if (Accounts[j].Password == Password) return Status.PasswordValid;
+                        }
+                    }
+                }
+            }
+            return Status.PasswordInvalid;
         }
     }
 }

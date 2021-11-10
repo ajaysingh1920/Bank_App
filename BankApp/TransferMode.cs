@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankApp.Models
+namespace BankApp.cli
 {
-    public enum TransactionStatus
+    public enum TransferMode
     {
-        Deposited,
-        Withdraw,
-        Transfer
+        RTGS,
+        IMPS
     }
 }

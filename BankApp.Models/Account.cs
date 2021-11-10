@@ -8,19 +8,23 @@ namespace BankApp.Models
 {
     public class Account
     {
-        public string username { get; set; }
+        public string ID;
 
-        public string password { get; set; }
+        public string Username { get; set; }
 
-        public decimal amount { get; set; }
+        public string Password { get; set; }
 
-        public List<Transactions> transaction { get; set; }
+        public decimal Amount { get; set; }
+
+        public List<Transactions> Transaction { get; set; }
 
         public Account(string username, string password)
         {
-            this.username = username;
-            this.password = password;
-            transaction = new List<Transactions>();
+            this.Username = username;
+            this.Password = password;
+            this.Transaction = new List<Transactions>();
+            var dt = DateTime.Now;
+            this.ID = Username.Substring(0, 4) + dt.ToString("MMMM dd") + " " + dt.ToString("HH:mm:ss");
         }
     }
 }

@@ -8,17 +8,33 @@ namespace BankApp.Models
 {
     public class Transactions
     {
-        public TransactionStatus transactionStatus;
+        public string Id;
 
-        public DateTime on;
+        public TransactionStatus TransactionStatus;
 
-        public Decimal amount;
+        public DateTime TransactionTime;
 
-        public Transactions(TransactionStatus transactionStatus, DateTime on, Decimal amount)
+        public string SenderBankname;
+
+        public string SenderUsername;
+
+        public string ReceiverBankname;
+
+        public string ReceiverUsername;
+
+        public Decimal Amount;
+
+        public Transactions(string SenderBankname,string SenderUsername,string ReceiverBankname,string ReceiverUsername,TransactionStatus TransactionStatus, DateTime TransactionTIme, Decimal Amount,string BankId,string AccountId)
         {
-            this.transactionStatus = transactionStatus;
-            this.on = on;
-            this.amount = amount;
+            this.SenderBankname = SenderBankname;
+            this.SenderUsername = SenderUsername;
+            this.ReceiverBankname = ReceiverBankname;
+            this.ReceiverUsername = ReceiverUsername;
+            this.TransactionStatus = TransactionStatus;
+            this.TransactionTime = TransactionTIme;
+            this.Amount = Amount;
+            var dt = DateTime.Now;
+            this.Id = "TXN" + BankId + AccountId + dt.ToString("MMMMdd") + "" + dt.ToString("HH:mm:ss");
         }
     }
 }

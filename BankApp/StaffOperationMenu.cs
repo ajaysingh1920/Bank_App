@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace BankApp.cli
 {
-    public enum Choice
+    public enum StaffOperationMenu
     {
         Create,
-        Deposit,
-        Withdraw,
-        Transfer,
+        Delete,
         TransactionHistory,
-        Quit
+        RevertTransaction,
+        ExchangeCurrency
     }
 }
