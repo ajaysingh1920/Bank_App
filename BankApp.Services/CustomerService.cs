@@ -13,7 +13,7 @@ namespace BankApp.Services
         {
             List<Bank> Bank = DataStorage.Bank;
 
-            var test = Bank.Select(_ => _.Name.Equals(Bankname)).FirstOrDefault();
+            //var test = Bank.Select(_ => _.Name.Equals(Bankname)).FirstOrDefault();
 
             for(int i = 0; i < Bank.Count; i++)
             {
